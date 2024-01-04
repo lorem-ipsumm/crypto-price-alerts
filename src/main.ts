@@ -1,4 +1,4 @@
-import { sleep } from "../utils/utils";
+import { discordLog, sleep } from "../utils/utils";
 import { checkAlerts, newAlert } from "./alert";
 
 const createNewAlert = async () => {
@@ -19,6 +19,7 @@ const createNewAlert = async () => {
 }
 
 const run = async () => {
+  await discordLog(`Starting ${new Date().toLocaleString()}`);
   while (true) {
     await checkAlerts(false);
     await sleep(15000);
