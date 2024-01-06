@@ -6,7 +6,7 @@ This repo allows you to setup custom price alerts for over 1000 tokens across hu
 - If you have a Discord key and channel ID that you want to send the notifications copy the `.env.example` file, update the example variables and rename it to `.env`.
 
 ## Creating Alerts 
-Alerts can be created in the `main.ts` file inside of the `createNewMethod`. Replace the calls to `newAlert` with the data for tokens/chains you want to monitor. In the `main` method make sure the `createNewAlert` method call is uncommented. The parameters are as follows:
+Alerts can be created in the `main.ts` file inside of the `createNewMethod()`. Replace the calls to `newAlert()` with the data for tokens/chains you want to monitor. In the `main()` method make sure the `createNewAlert()` method call is uncommented. The parameters are as follows:
 - `tokenSymbol`: The symbol for the token you want to monitor. This is purely for naming the alert and doesn't need to match the token data. 
 - `poolAddress`: The address of the pool that contains the token you want to monitor.
 - `network`: The name of the network that contains the pool and asset you want to monitor. 
