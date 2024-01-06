@@ -1,10 +1,10 @@
-import { ALERT_DATA } from "../utils/interface";
+import { ALERT_DATA, NETWORKS } from "../utils/interface";
 import { discordLog, fetchTokenPrice, loadObject, saveObject } from "../utils/utils"
 
 export const newAlert = async (
   tokenSymbol: string,
   poolAddress: string,
-  network: string,
+  network: NETWORKS,
   price: number,
   alertType: "above" | "below" = "above"
 ):Promise<ALERT_DATA> => {
@@ -36,7 +36,10 @@ export const deleteAlert = async (title: string) => {
   saveObject("alerts.json", alerts);
 }
 
-export const checkAlerts = async (deleteAlerts?: boolean) => {
+export const checkAlerts = async (
+  // should the alert be deleted after it is triggered (true for yes; false for no)
+  deleteAlerts?: boolean
+) => {
   // load all alerts
   const _alerts = await loadObject("alerts.json");
   const alerts:ALERT_DATA[] = Object.values(_alerts);

@@ -20,14 +20,17 @@ export function discordLog(message: string) {
       console.log(e);
     }
   }
+  const hasEnv = process.env.DISCORD_KEY && process.env.DISCORD_CHANNEL;
   // initiate discord if needed
-  if (!discordReady) {
+  if (!discordReady && hasEnv) {
     discord = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
     discord.login(process.env.DISCORD_KEY);
     discord.on("ready", () => {
       discordReady = true;
       sendMessage();
     })
+  } else if (!hasEnv) {
+    console.log("Missing discord env variables");
   } else {
     sendMessage();
   }
@@ -38,6 +41,7 @@ export const sleep = (ms: number) => {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+// fix network names if needed
 export const getNetwork = (network: string) => {
   if (network === "ethereum") return "eth";
   else if (network === "binance") return "bsc";
@@ -45,6 +49,7 @@ export const getNetwork = (network: string) => {
   else return network;
 }
 
+// fetch the current price of a token from GeckoTerminal
 export const fetchTokenPrice = async (
   poolAddress: string,
   network: string = "eth",
@@ -60,6 +65,7 @@ export const fetchTokenPrice = async (
   }
 }
 
+// fetch historical price data for a token from GeckoTerminal
 const fetchPriceData = async (
   poolAddress: string,
   network: string = "eth",
