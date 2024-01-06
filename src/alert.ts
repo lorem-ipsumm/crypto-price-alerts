@@ -19,6 +19,7 @@ export const newAlert = async (
     network: network,
     targetPrice: price,
     alertType: alertType,
+    alertCount: 0
   };
   // update the alerts object
   alerts[title] = data;
@@ -51,7 +52,8 @@ export const checkAlerts = async (
       alert.network
     ));
     if (price === -1) return;
-    console.log(`${alert.title} price: ${price}`);
+    const timestamp = new Date().toLocaleString();
+    console.log(`${timestamp}: ${alert.title} price: ${price}`);
     let message;
     if (alert.alertType === "above" && price > alert.targetPrice) {
       // alert the user
@@ -60,13 +62,20 @@ export const checkAlerts = async (
       // alert the user
       message = (`${alert.title} is below ${alert.targetPrice}!`);
     }
-    if (message)  {
+    const alertCount = alert.alertCount;
+    const maxAlertCount = 2;
+    if (message && alertCount < maxAlertCount)  {
       discordLog(message);
-      console.log(alert);
-      console.log(price);
       message += `\nAddress: ${alert.poolAddress}\nNetwork: ${alert.network}\nPrice: ${price}`;
+      // update the alert count
+      alert.alertCount++;
+      // save the alert data
       // delete the alert if requested
       if (deleteAlerts) deleteAlert(alert.title);
+    } else if(!message) {
+      // set the alert count to 0 if the alert is not triggered
+      alert.alertCount = 0;
     }
+    saveObject("alerts.json", _alerts);
   }
 }

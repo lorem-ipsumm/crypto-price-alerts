@@ -16,4 +16,5 @@ export interface ALERT_DATA {
   network: NETWORKS;
   targetPrice: number;
   alertType: "above" | "below";
+  alertCount: number
 }
