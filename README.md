@@ -20,7 +20,7 @@ Alerts can be created in the `main.ts` file inside of the `createNewMethod()`. R
 To run the bot make sure the `run()` method in the `main()` method is uncommented. This will start the bot and it should run indefinitely and periodically check the prices of the assets that you've set alerts for. The `checkAlerts()` method takes in a boolean variable that allows you to set whether or not you want the alert to be deleted after it's been triggered. Setting this to true will prevent the alert from constantly being triggered once the condition is met for a given alert.
 
 ## Alert Storage
-All alerts are stored in a JSON file inside of `output/alert.json`. You can modify the properties for an alert by modifying this file.
+All alerts are stored in a JSON file inside of `output/alerts.json`. You can modify the properties for an alert by modifying this file.
 
 ## Disclaimer
 As I stated earlier, this repo is pretty bare-bones and doesn't include any complex functionality, but is simple enough for anyone to add more complexity and features.
