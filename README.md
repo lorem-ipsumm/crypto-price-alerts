@@ -11,7 +11,7 @@ Alerts can be created in the `main.ts` file inside of the `createNewMethod()`. R
 - `poolAddress`: The address of the pool that contains the token you want to monitor.
 - `network`: The name of the network that contains the pool and asset you want to monitor. 
 	- This name must match what the GeckoTerminal API expects. I've already included a list of 9 possible networks. Feel free to add any additional ones
-- `price`: number,
+- `price`: The price that will trigger the alert.
 - `alertType`: The type of alert you want this to be. Must be "above" or "below".
 	- "above" for when you want to be alerted when the asset price crosses above `price`.
 	- "below" for when you want to be alerted when the asset price crosses below `price`

@@ -45,7 +45,10 @@ export const checkAlerts = async (
   const _alerts = await loadObject("alerts.json");
   const alerts:ALERT_DATA[] = Object.values(_alerts);
   // loop through alerts
-  for (const alert of alerts) {
+  for (const alertData of alerts) {
+    let alert = {
+      ...alertData
+    };
     // load the current price for the token
     const price = Number(await fetchTokenPrice(
       alert.poolAddress, 
@@ -76,6 +79,7 @@ export const checkAlerts = async (
       // set the alert count to 0 if the alert is not triggered
       alert.alertCount = 0;
     }
+    _alerts[alert.title] = alert;
     saveObject("alerts.json", _alerts);
   }
 }
