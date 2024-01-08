@@ -56,26 +56,35 @@ export const checkAlerts = async (
     ));
     if (price === -1) return;
     const timestamp = new Date().toLocaleString();
-    console.log(`${timestamp}: ${alert.title} price: ${price}`);
-    let message;
+    console.log(`${timestamp}: ${alert.title} price: ${price.toFixed(3)}`);
+    // setup message data object
+    let messageData = {
+      title: "",
+      targetPrice: 0,
+      direction: "",
+      set: false
+    }
     if (alert.alertType === "above" && price > alert.targetPrice) {
       // alert the user
-      message = (`${alert.title} is above ${alert.targetPrice}!`);
+      messageData.set = true;
+      messageData.direction = "above";
     } else if (alert.alertType === "below" && price < alert.targetPrice) {
       // alert the user
-      message = (`${alert.title} is below ${alert.targetPrice}!`);
+      messageData.set = true;
+      messageData.direction = "below";
     }
+    let message = (`${alert.title} \n${messageData.direction}  \nCurrent Price: ${price.toFixed(3)}`);
+    // if there is no message, continue
     const alertCount = alert.alertCount;
     const maxAlertCount = 2;
-    if (message && alertCount < maxAlertCount)  {
+    if (messageData.set && alertCount < maxAlertCount)  {
       discordLog(message);
-      message += `\nAddress: ${alert.poolAddress}\nNetwork: ${alert.network}\nPrice: ${price}`;
       // update the alert count
       alert.alertCount++;
       // save the alert data
       // delete the alert if requested
       if (deleteAlerts) deleteAlert(alert.title);
-    } else if(!message) {
+    } else if(!messageData.set) {
       // set the alert count to 0 if the alert is not triggered
       alert.alertCount = 0;
     }
