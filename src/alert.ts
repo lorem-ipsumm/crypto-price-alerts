@@ -1,5 +1,5 @@
 import { ALERT_DATA, NETWORKS } from "../utils/interface";
-import { discordLog, fetchTokenPrice, loadObject, saveObject } from "../utils/utils"
+import { discordLog, fetchTokenHistoricalPrice, fetchTokenPrice, loadObject, saveObject } from "../utils/utils"
 
 export const newAlert = async (
   tokenSymbol: string,

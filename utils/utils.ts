@@ -66,13 +66,13 @@ export const fetchTokenPrice = async (
 }
 
 // fetch historical price data for a token from GeckoTerminal
-const fetchPriceData = async (
+export const fetchTokenHistoricalPrice = async (
   poolAddress: string,
   network: string = "eth",
   interval: string = "hour",
   aggregate: number = 1,
   limit: number = 1000
-):Promise<any[]> => {
+):Promise<number[][]> => {
   try {
     const url = new URL(`https://api.geckoterminal.com/api/v2/networks/${network}/pools/${poolAddress.toLowerCase()}/ohlcv/${interval}`);
     url.searchParams.append("aggregate", aggregate.toString());
@@ -97,6 +97,38 @@ export async function saveObject (fileName: string, data: Object, dir?: string) 
     console.log(err);
     console.log("saving error")
   }
+}
+
+export const getAveragePrice = async (
+  pool: string,
+  network: string,
+  interval: string,
+  aggregate: number,
+  limit: number
+) => {
+  // only look at dates from the last week
+  const date = new Date();
+  const weekAgo = date.setDate(date.getDate() - 7);
+  const priceData = await fetchTokenHistoricalPrice(
+    pool,
+    network,
+    interval,
+    aggregate,
+    limit
+  );
+
+  // filter out dates before the last week
+  const filteredPriceData = priceData.filter((priceData) => {
+    return priceData[0] > new Date(weekAgo).getTime() / 1000;
+  });
+
+  // calculate the average price
+  let sum = 0;
+  for (const priceData of filteredPriceData) {
+    sum += priceData[4];
+  }
+  const averagePrice = sum / filteredPriceData.length;
+  return averagePrice;
 }
 
 // load an object from file
