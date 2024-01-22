@@ -2,10 +2,28 @@ require("dotenv").config();
 import axios from "axios";
 const fs = require("fs");
 import { Client, Intents } from "discord.js";
+import { ethers } from "ethers";
 
 // login to discord
 let discord:any;
 let discordReady = false;
+
+// web3 provider and wallet
+export let provider: ethers.providers.BaseProvider | null = null;
+export let wallet: ethers.Wallet | null = null;
+
+export const initWeb3 = async () => {
+  // create web3 provider
+  const web3Provider = new ethers.providers.JsonRpcProvider(
+    process.env.RPC_URL
+  );
+  // create web3 wallet
+  const web3Wallet = null;
+  
+  // update global variables
+  provider = web3Provider;
+  wallet = web3Wallet;
+}
 
 // log output and error message in a discord server
 export function discordLog(message: string) {

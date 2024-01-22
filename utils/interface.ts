@@ -13,6 +13,7 @@ export type NETWORKS =
 export interface ALERT_DATA {
   title: string;
   poolAddress: string;
+  tokenAddress: string;
   network: NETWORKS;
   targetPrice: number;
   alertType: "above" | "below";
