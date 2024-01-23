@@ -163,3 +163,54 @@ export async function loadObject (fileName: string) {
     return([]);
   }
 }
+
+// aggregator token format
+// this is what defillama expects for the fromToken and toToken fields
+export interface AGG_TOKEN {
+  address: string;
+  chainId: number;
+  decimals: number;
+  geckoId: string | null;
+  isGeckoToken?: boolean;
+  label: string;
+  logoURI: string;
+  logoURI2: string | null;
+  name: string;
+  symbol: string;
+  value: string;
+  volume24h: number;
+}
+
+export const aggTokens: {
+  [key: string]: AGG_TOKEN;
+} = {
+  "USDC.e": {
+    address: "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8",
+    chainId: 42161,
+    decimals: 6,
+    geckoId: null,
+    label: "USDC.e",
+    logoURI:
+      "https://token-icons.llamao.fi/icons/tokens/42161/0xff970a61a04b1ca14834a43f5de4533ebddb5cc8?h=20&w=20",
+    logoURI2: null,
+    name: "USD Coin (Bridged)",
+    symbol: "USDC.e",
+    value: "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8",
+    volume24h: 0,
+  },
+  jUSDC: {
+    address: "0xe66998533a1992ece9ea99cdf47686f4fc8458e0",
+    chainId: 42161,
+    decimals: 18,
+    geckoId: null,
+    isGeckoToken: true,
+    label: "jUSDC",
+    logoURI:
+      "https://token-icons.llamao.fi/icons/tokens/42161/0xe66998533a1992ece9ea99cdf47686f4fc8458e0?h=20&w=20",
+    logoURI2: null,
+    name: "Jones USDC",
+    symbol: "jUSDC",
+    value: "0xe66998533a1992ece9ea99cdf47686f4fc8458e0",
+    volume24h: 0,
+  },
+};

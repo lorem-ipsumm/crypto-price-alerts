@@ -1,6 +1,6 @@
-import { discordLog, initWeb3, sleep } from "../utils/utils";
+import { aggTokens, discordLog, initWeb3, sleep } from "../utils/utils";
 import { checkAlerts, newAlert } from "./alert";
-import { executeTrade } from "./execute";
+import { executeTrade, getQuoteData } from "./execute";
 
 const createNewAlert = async () => {
   newAlert(
@@ -22,8 +22,6 @@ const createNewAlert = async () => {
 }
 
 const run = async () => {
-  await discordLog(`Starting ${new Date().toLocaleString()}`);
-  await initWeb3();
   while (true) {
     await checkAlerts(
       false,
@@ -35,8 +33,19 @@ const run = async () => {
 
 
 const main = async () => {
+  // await discordLog(`Starting ${new Date().toLocaleString()}`);
+
+  await initWeb3();
+  const quoteData = await getQuoteData(
+    aggTokens["jUSDC"],
+    aggTokens["USDC.e"],
+    "1",
+    "arbitrum"
+  );
+  const receipt = await executeTrade(quoteData);
+  console.log(receipt);
   // await createNewAlert();
-  await run();
+  // await run();
 }
 
 main();
