@@ -10,6 +10,13 @@ export type NETWORKS =
   | "solana"
   // add more networks here
 
+export type AGGREGATOR =
+  | "1inch"
+  | "Matcha/0x"
+  | "OpenOcean"
+  | "KyberSwap"
+  | "ParaSwap"
+
 export interface ALERT_DATA {
   title: string;
   poolAddress: string;

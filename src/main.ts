@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import { aggTokens, discordLog, initWeb3, sleep } from "../utils/utils";
 import { checkAlerts, newAlert } from "./alert";
 import { executeTrade, getQuoteData } from "./execute";
@@ -31,21 +32,28 @@ const run = async () => {
   }
 }
 
+const testRoute = async () => {
+  const inputToken = aggTokens["USDC.e"];
+  const outputToken = aggTokens["jUSDC"];
+
+  const quoteData = await getQuoteData(
+    inputToken,
+    outputToken,
+    "1000",
+    "arbitrum",
+    "ParaSwap"
+  );
+
+  const rawAmtOut = quoteData.amountReturned;
+  const amtOut = ethers.utils.formatUnits(rawAmtOut, outputToken.decimals);
+  console.log(amtOut);
+}
 
 const main = async () => {
-  // await discordLog(`Starting ${new Date().toLocaleString()}`);
-
+  await discordLog(`Starting ${new Date().toLocaleString()}`);
   await initWeb3();
-  const quoteData = await getQuoteData(
-    aggTokens["jUSDC"],
-    aggTokens["USDC.e"],
-    "1",
-    "arbitrum"
-  );
-  const receipt = await executeTrade(quoteData);
-  console.log(receipt);
   // await createNewAlert();
-  // await run();
+  await run();
 }
 
 main();

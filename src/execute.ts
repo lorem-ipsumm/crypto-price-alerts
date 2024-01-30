@@ -1,6 +1,6 @@
 require("dotenv").config();
 import { ethers } from "ethers";
-import { ALERT_DATA } from "../utils/interface";
+import { AGGREGATOR, ALERT_DATA } from "../utils/interface";
 import { AGG_TOKEN, aggTokens, wallet } from "../utils/utils";
 import { getProvider, getWallet } from "./ethersHelper";
 
@@ -9,6 +9,7 @@ export const getQuoteData = async (
   toToken: AGG_TOKEN,
   rawAmountIn: string | number,
   network: string,
+  aggregator: AGGREGATOR
 ) => {
 
   try {
@@ -21,7 +22,7 @@ export const getQuoteData = async (
 
     // construct request url
     const url = new URL("https://swap-api.defillama.com/dexAggregatorQuote");
-    url.searchParams.append("protocol", "ParaSwap");
+    url.searchParams.append("protocol", aggregator);
     url.searchParams.append("chain", network);
     url.searchParams.append("from", fromToken.address);
     url.searchParams.append("to", toToken.address);
@@ -74,7 +75,7 @@ export const getQuoteData = async (
     // get the request response
     let res = await data.json();
 
-    return res.rawQuote;
+    return res;
 
   } catch (e) {
     console.log(e);
@@ -126,12 +127,16 @@ export const executeTrade = async (alertData: ALERT_DATA) => {
     const rawAmountIn = "500";
 
     // get quote data
-    const tx = await getQuoteData(
+    const quoteData = await getQuoteData(
       fromToken,
       toToken,
       rawAmountIn,
-      network
+      network,
+      "ParaSwap"
     );
+
+    if (!quoteData) return;
+    const tx = quoteData.rawQuote;
 
     // construct transaction data
     const txData = {
