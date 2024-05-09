@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/main.ts",
-    "start:forever": "pm2 start 'npm start' --name price-alerts",
-    "stop:forever": "pm2 stop price-alerts"
+    "start": "tsc && node dist/src/main.js",
+    "dev": "ts-node src/main.ts"
   },
   "keywords": [],
   "author": "",
