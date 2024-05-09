@@ -3,6 +3,7 @@ import axios from "axios";
 const fs = require("fs");
 import { Client, Intents } from "discord.js";
 import { ethers } from "ethers";
+import { PRICE_TYPE } from "./interface";
 
 // login to discord
 let discord:any;
@@ -71,11 +72,12 @@ export const getNetwork = (network: string) => {
 export const fetchTokenPrice = async (
   poolAddress: string,
   network: string = "eth",
+  priceType: PRICE_TYPE
 ):Promise<number> => {
   try {
     const url = new URL(`https://api.geckoterminal.com/api/v2/networks/${network}/pools/${poolAddress.toLowerCase()}`);
     const req = await axios.get(url.toString());
-    const price = req.data.data.attributes.base_token_price_usd;
+    const price = req.data.data.attributes[priceType];
     return price;
   } catch (e) {
     console.log(e);

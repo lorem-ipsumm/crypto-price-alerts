@@ -1,7 +1,6 @@
-import { ALERT_DATA, NETWORKS } from "../utils/interface";
+import { ALERT_DATA, NETWORKS, PRICE_TYPE } from "../utils/interface";
 import {
   discordLog,
-  fetchTokenHistoricalPrice,
   fetchTokenPrice,
   loadObject,
   saveObject,
@@ -13,7 +12,8 @@ export const newAlert = async (
   tokenAddress: string,
   network: NETWORKS,
   price: number,
-  alertType: "above" | "below" = "above"
+  alertType: "above" | "below" = "above",
+  priceType: PRICE_TYPE
 ): Promise<ALERT_DATA> => {
   // load alerts file
   let alerts = (await loadObject("alerts.json")) || {};
@@ -27,6 +27,7 @@ export const newAlert = async (
     network: network,
     targetPrice: price,
     alertType: alertType,
+    priceType: priceType,
     alertCount: 0,
   };
   // update the alerts object
@@ -60,7 +61,11 @@ export const checkAlerts = async (
     };
     // load the current price for the token
     const price = Number(
-      await fetchTokenPrice(alert.poolAddress, alert.network)
+      await fetchTokenPrice(
+        alert.poolAddress, 
+        alert.network,
+        alert.priceType
+      )
     );
     // check if the price is valid
     if (price === -1) return;

@@ -7,15 +7,22 @@ export type NETWORKS =
   | "optimism"
   | "fantom"
   | "base"
-  | "solana"
-  // add more networks here
+  | "solana";
+// add more networks here
 
 export type AGGREGATOR =
   | "1inch"
   | "Matcha/0x"
   | "OpenOcean"
   | "KyberSwap"
-  | "ParaSwap"
+  | "ParaSwap";
+
+export type PRICE_TYPE = 
+  | "base_token_price_usd"
+  | "base_token_price_quote_token"
+  | "quote_token_price_usd"
+  | "quote_token_price_base_token"
+  | "base_token_price_quote_token";
 
 export interface ALERT_DATA {
   title: string;
@@ -24,5 +31,6 @@ export interface ALERT_DATA {
   network: NETWORKS;
   targetPrice: number;
   alertType: "above" | "below";
-  alertCount: number
+  priceType: PRICE_TYPE, 
+  alertCount: number;
 }

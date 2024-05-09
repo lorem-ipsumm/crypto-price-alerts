@@ -1,24 +1,17 @@
 import { ethers } from "ethers";
-import { aggTokens, discordLog, initWeb3, sleep } from "../utils/utils";
+import { aggTokens, sleep } from "../utils/utils";
 import { checkAlerts, newAlert } from "./alert";
-import { executeTrade, getQuoteData } from "./execute";
+import { getQuoteData } from "./execute";
 
 const createNewAlert = async () => {
   newAlert(
-    "jUSDC", 
-    "0x2bcd0aac7d98697d8760fb291625829113e354e7", 
-    "0xe66998533a1992ece9ea99cdf47686f4fc8458e0",
+    "plsARB", 
+    "0x47a52b2bee1a0cc9a34bb9ee34c357c054112c3e", 
+    "0x7a5D193fE4ED9098F7EAdC99797087C96b002907",
     "arbitrum", 
-    1.06, 
-    "below"
-  );
-  newAlert(
-    "jUSDC", 
-    "0x2bcd0aac7d98697d8760fb291625829113e354e7", 
-    "0xe66998533a1992ece9ea99cdf47686f4fc8458e0",
-    "arbitrum", 
-    1.078, 
-    "above"
+    0.992, 
+    "below",
+    "base_token_price_quote_token"
   );
 }
 
@@ -50,8 +43,8 @@ const testRoute = async () => {
 }
 
 const main = async () => {
-  await discordLog(`Starting ${new Date().toLocaleString()}`);
-  await initWeb3();
+  // await discordLog(`Starting ${new Date().toLocaleString()}`);
+  // await initWeb3();
   // await createNewAlert();
   await run();
 }
