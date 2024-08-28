@@ -1,21 +1,16 @@
+import { PRICE_TYPE } from "../utils/interface";
 import { discordLog, sleep } from "../utils/utils";
 import { checkAlerts, newAlert } from "./alert";
 
 const createNewAlert = async () => {
-  newAlert(
-    "jUSDC", 
-    "0x2bcd0aac7d98697d8760fb291625829113e354e7", 
-    "arbitrum", 
-    1.06, 
-    "below"
-  );
-  newAlert(
-    "jUSDC", 
-    "0x2bcd0aac7d98697d8760fb291625829113e354e7", 
-    "arbitrum", 
-    1.078, 
-    "above"
-  );
+  newAlert({
+    tokenSymbol: "tsTON",
+    poolAddress: "EQC_OxV6MQ6csZXNk2Zu6jMrsGRI6m4YRzL2McKaPCYmNk6l",
+    network: "ton",
+    price: 1.0242,
+    alertType: "below",
+    priceType: PRICE_TYPE.BASE_TOKEN_PRICE_QUOTE_TOKEN
+  });
 }
 
 const run = async () => {
@@ -26,9 +21,7 @@ const run = async () => {
   }
 }
 
-
 const main = async () => {
-  // await createNewAlert();
   await run();
 }
 

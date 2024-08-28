@@ -2,9 +2,10 @@ require("dotenv").config();
 import axios from "axios";
 const fs = require("fs");
 import { Client, Intents } from "discord.js";
+import { PRICE_TYPE } from "./interface";
 
 // login to discord
-let discord:any;
+let discord: any;
 let discordReady = false;
 
 // log output and error message in a discord server
@@ -51,13 +52,17 @@ export const getNetwork = (network: string) => {
 
 // fetch the current price of a token from GeckoTerminal
 export const fetchTokenPrice = async (
-  poolAddress: string,
+  _poolAddress: string,
   network: string = "eth",
-):Promise<number> => {
+  priceType: PRICE_TYPE = PRICE_TYPE.BASE_TOKEN_PRICE_USD
+): Promise<number> => {
   try {
-    const url = new URL(`https://api.geckoterminal.com/api/v2/networks/${network}/pools/${poolAddress.toLowerCase()}`);
+    // networks where the pool address isn't exclusively checksummed
+    const specialNetworks = ["solana", "ton"];
+    const poolAddress = specialNetworks.includes(network) ? _poolAddress : _poolAddress.toLowerCase();
+    const url = new URL(`https://api.geckoterminal.com/api/v2/networks/${network}/pools/${poolAddress}`);
     const req = await axios.get(url.toString());
-    const price = req.data.data.attributes.base_token_price_usd;
+    const price = req.data.data.attributes[priceType];
     return price;
   } catch (e) {
     console.log(e);
@@ -72,7 +77,7 @@ const fetchPriceData = async (
   interval: string = "hour",
   aggregate: number = 1,
   limit: number = 1000
-):Promise<any[]> => {
+): Promise<any[]> => {
   try {
     const url = new URL(`https://api.geckoterminal.com/api/v2/networks/${network}/pools/${poolAddress.toLowerCase()}/ohlcv/${interval}`);
     url.searchParams.append("aggregate", aggregate.toString());
@@ -87,7 +92,7 @@ const fetchPriceData = async (
 }
 
 // save an object to file
-export async function saveObject (fileName: string, data: Object, dir?: string) {
+export async function saveObject(fileName: string, data: Object, dir?: string) {
   try {
     // save/load file directory 
     const path = `./${dir ? dir : 'output'}/${fileName}`;
@@ -100,16 +105,16 @@ export async function saveObject (fileName: string, data: Object, dir?: string) 
 }
 
 // load an object from file
-export async function loadObject (fileName: string) {
+export async function loadObject(fileName: string) {
   try {
     // read data from file
     const path = `./output/${fileName}`;
-    const data = fs.readFileSync(path, {encoding: 'utf8'});
+    const data = fs.readFileSync(path, { encoding: 'utf8' });
     // return JSON 
-    return(JSON.parse(data));
+    return (JSON.parse(data));
   } catch (err) {
     console.log("loading error");
     console.log(err);
-    return([]);
+    return ([]);
   }
 }

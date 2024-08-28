@@ -1,2 +1,11 @@
 {
+  "tsTON-below-1.06": {
+    "title": "tsTON-below-1.0242",
+    "poolAddress": "EQC_OxV6MQ6csZXNk2Zu6jMrsGRI6m4YRzL2McKaPCYmNk6l",
+    "network": "ton",
+    "targetPrice": 1.0242,
+    "alertType": "below",
+    "alertCount": 1,
+    "priceType": "base_token_price_quote_token"
+  }
 }
